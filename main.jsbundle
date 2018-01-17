@@ -1,0 +1,1 @@
+{"type":"TransformError","snippet":"  4 | import {\n  5 |     StyleSheet\n> 6 |     Navigator,\n    |     ^\n  7 |     Image,\n  8 |     Platform,\n  9 |     // DeviceEventEmitter,","lineNumber":6,"column":4,"filename":"/Users/liang/Desktop/RNExample/index.js","errors":[{"filename":"/Users/liang/Desktop/RNExample/index.js","lineNumber":6}]}
