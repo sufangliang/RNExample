@@ -3,16 +3,16 @@ import {
     StyleSheet,
     Image,
     Platform,
-    View,
+    DeviceEventEmitter,
     AppRegistry
 } from 'react-native';
 import TabNavigator from 'react-native-tab-navigator';
 import {Navigator} from 'react-native-deprecated-custom-components';
-import PropTypes from 'prop-types'
+// import PropTypes from 'prop-types'
 
-
-
-import Home from './Home'
+import Home from './app/main/Home'
+import Htt from './app/main/Htt'
+import HourList from './app/main/HourList'
 
 class RNExample extends Component {
 
@@ -28,6 +28,13 @@ class RNExample extends Component {
             usbadgeText:''          // 海淘Item角标文本
         };
     }
+
+    // 获取最新数据个数网络请求
+    loadDataNumber() {
+
+
+    }
+
 
 // 返回 TabBar 的 Item
     renderTabBarItem(title, selectedTab, image, selectedImage, component, badgeText, subscription) {
@@ -60,27 +67,81 @@ class RNExample extends Component {
             </TabNavigator.Item>
         );
     }
+    // 点击了Item
+    clickItem(selectedTab, subscription) {
+
+        if (subscription !== "" && this.state.selectedTab == selectedTab) {
+            // 发送通知
+            DeviceEventEmitter.emit(subscription);
+        }
+        console.log(selectedTab)
+        // 渲染页面
+        this.setState({ selectedTab: selectedTab })
+    }
+
+    // 组件加载完成
+    componentDidMount() {
+        // 注册通知
+        this.subscription = DeviceEventEmitter.addListener('isHiddenTabBar', (data)=>{this.hiddenTabBar(data)});
+
+        // 最新数据的个数
+        setInterval(() => {
+            this.loadDataNumber();
+        }, 30000);
+    }
+
+    // 设置 Navigator 转场动画
+    setNavAnimationType(route) {
+        if (route.animationType) {      // 有值
+            let conf = route.animationType;
+            conf.gestures = null;           // 关闭返回手势
+            return conf;
+        }else {
+            return Navigator.SceneConfigs.PushFromRight;    // 默认转场动画
+        }
+    }
+
+    // 隐藏 TabBar
+    hiddenTabBar(data) {
+        this.setState({
+            isHiddenTabBar:data,
+        })
+    }
+    // 组件即将销毁
+    componentWillUnmount() {
+        // 销毁
+        this.subscription.remove();
+    }
 
 
     render() {
         return (
-           <View></View>
+            <TabNavigator
+                tabBarStyle={this.state.isHiddenTabBar !== true ? {} : {height:0, overflow:'hidden'}}
+                sceneStyle={this.state.isHiddenTabBar !== true ? {} : {paddingBottom:0}}
+            >
+                {/* 首页 */}
+                {this.renderTabBarItem("首页", 'Home', 'tabbar_home_30x30', 'tabbar_home_selected_30x30', Home, this.state.cnbadgeText, "clickHomeItem")}
+                {/* 海淘 */}
+                {this.renderTabBarItem("一键交单", 'htt', 'tabbar_abroad_30x30', 'tabbar_abroad_selected_30x30', Htt, this.state.usbadgeText, "clickHTItem")}
+                {/* 小时风云榜 */}
+                {this.renderTabBarItem("我的", 'hourlist', 'tabbar_rank_30x30', 'tabbar_rank_selected_30x30', HourList)}
+            </TabNavigator>
         );
     }
 }
-
 
     const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#F5FCFF',
+        backgroundColor: '#000000',
     },
     tabbarIconStyle: {
         width:Platform.OS === 'ios' ? 30 : 25,
         height:Platform.OS === 'ios' ? 30 : 25,
-    }
+     }
     });
 
 
