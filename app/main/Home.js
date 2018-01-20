@@ -4,14 +4,45 @@ import { AppRegistry, Text} from 'react-native';
 import {
     StyleSheet,
     View,
+    TouchableOpacity,
+    Image,
+    // ListView,
+    // Dimensions,
+    // Navigator,
+    // ActivityIndicator,
+    // Modal,
+    // AsyncStorage,
+    // DeviceEventEmitter,
+    // InteractionManager,
+    // Animated,
 } from 'react-native';
 
+import GDBaseNavBar from '../Base/GDBaseNavBar';
+
+
 export  default class Home extends Component <{}> {
+
+
+    // 返回左边按钮
+    renderLeftItem() {
+        return(
+            <TouchableOpacity
+                // onPress={() => {this.pushToHalfHourHot()}}
+            >
+                <Image source={{uri:'hot_icon_20x20'}} style={styles.navBarLeftItemStyle} />
+            </TouchableOpacity>
+        );
+    }
+
     render() {
         return (
 
             <View style={styles.container}>
-                {/*console.log(homeviewhome)*/}
+                <GDBaseNavBar
+                    leftItem = {() => this.renderLeftItem()}
+                    // titleItem = {() => this.renderTitleItem()}
+                    // rightItem = {() => this.renderRightItem()}
+                />
             </View>
         )
     }

@@ -12,7 +12,7 @@ import {Navigator} from 'react-native-deprecated-custom-components';
 
 import Home from './app/main/Home'
 import Htt from './app/main/Htt'
-import HourList from './app/main/HourList'
+import Mine from './app/main/Mine'
 
 class RNExample extends Component {
 
@@ -125,7 +125,7 @@ class RNExample extends Component {
                 {/* 海淘 */}
                 {this.renderTabBarItem("一键交单", 'htt', 'tabbar_abroad_30x30', 'tabbar_abroad_selected_30x30', Htt, this.state.usbadgeText, "clickHTItem")}
                 {/* 小时风云榜 */}
-                {this.renderTabBarItem("我的", 'hourlist', 'tabbar_rank_30x30', 'tabbar_rank_selected_30x30', HourList)}
+                {this.renderTabBarItem("我的", 'mine', 'tabbar_rank_30x30', 'tabbar_rank_selected_30x30', Mine)}
             </TabNavigator>
         );
     }
